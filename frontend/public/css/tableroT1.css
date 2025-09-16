@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #181b34;
+    color: #d5d8df;
+    font-family: Arial, sans-serif;
+
+}
+.container-table-uno{
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.table-compromiso-t1 {
+
+ 
+
+
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    border-radius: 6px;
+
+}
+
+table.table-compromiso-t1,
+thead,
+tr,
+th,
+td {
+    background-color: rgb(48, 50, 78);
+    text-align: left;
+    padding: 10px;
+}
+
+
+thead tr {
+    border-left: 10px solid rgb(3, 127, 76);
+}
+tbody tr {
+    border-left: 10px solid rgb(3, 127, 76);
+    opacity: 0.5;
+}
+.titulo-tabla {
+    color: rgb(3, 127, 76);
+    font-size: 24px;
+    letter-spacing: -0.1px;
+    padding-left: 4px;
+    font-weight: 800;
+}
+
+
+.table-compromiso-t1 th,
+.table-compromiso-t1 td {
+    border: 1px solid #c4c4c4;  
+    padding: 10px;
+    text-align: center;
+}
