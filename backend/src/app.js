@@ -20,7 +20,12 @@ app.use(express.static(join(__dirname, '../../frontend/public')));
 
 app.use(morgan('dev'));
 app.use(cors());
+
+// ✅ Para leer JSON (fetch, axios, etc.)
 app.use(express.json());
+
+// ✅ Para leer formularios HTML (application/x-www-form-urlencoded)
+app.use(express.urlencoded({ extended: true }));
 
 // Rutas
 app.use(indexRoutes);
@@ -28,9 +33,9 @@ app.use(indexRoutes);
 // Arranque del servidor
 const PORT = process.env.PORT || 3000;
 
+app.listen(PORT, () => {
+  console.log(`---------------------------Servidor corriendo en http://localhost:${PORT}------------------`);
+});
 
-  app.listen(PORT, () => {
-    console.log(`---------------------------Servidor corriendo en http://localhost:${PORT}------------------`);
-  });
 //   connectDB().then(() => {
 // });

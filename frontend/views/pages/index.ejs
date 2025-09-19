@@ -23,30 +23,35 @@
                 <p>Bancolombia</p>
             </div>
 
-            <form>
-                <div class="form-group">
-                    <label for="email">Tu dirección de e-mail</label>
-                    <input type="email" id="email" placeholder="Correo electrónico" required>
-                </div>
+          <form id="loginForm" novalidate>
+  <div class="form-group">
+    <label for="email">Tu dirección de e-mail</label>
+    <input type="email" id="email" placeholder="Correo electrónico" required>
+    <small class="error-mensaje" id="emailError"></small>
+  </div>
 
-                <div class="form-group">
-                    <label for="password">Ingresa la contraseña</label>
-                    <input type="password" id="password" placeholder="Contraseña" required>
-                </div>
+  <div class="form-group">
+    <label for="password">Ingresa la contraseña</label>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <small class="error-mensaje" id="passwordError"></small>
+  </div>
+      <!-- <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a> -->
 
-                <!-- <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a> -->
+  <div class="container-button">
+    <button type="submit" class="btn" id="btn-form">Iniciar sesión</button>
+    <i class="bi bi-arrow-right"></i>
+  </div>
+</form>
 
-                <div class="container-button">
-                    <button type="button" class="btn" id="btn-form">Iniciar sesión</button>
-                    <i class="bi bi-arrow-right"></i>
-                </div>
+            <div class="divider-forms"></div>
+            <a href="#" id="openModal">Crear cuenta nueva</a>
 
-
-            </form>
-
+            <%- include('../partials/modalRegistoUser') %>
         </div>
     </section>
-    <script src="/js/formUser.js" defer></script>
+    <script src="/js/indexFormUser.js" defer></script>
+    <script src="/js/validacionFormLogin.js" defer></script>
+
 
 
 </body>
