@@ -1,6 +1,8 @@
 import express from "express";
 import User from "../models/usuariosModel.js"; // usuariosModel.js
 const router = express.Router();
+import bcrypt from "bcrypt";
+
 
 // GET all users
 router.get('/usuarios', async (req, res) => {

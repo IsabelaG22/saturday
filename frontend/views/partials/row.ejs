@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <tr>
+  <td><%= r.id %></td>
+  <td><%= r.name %></td>
+  <td>
+    <select class="estado-select" data-id="<%= r.id %>">
+      <% estados.forEach(e => { %>
+        <option value="<%= e %>" <%= r.status === e ? "selected" : "" %>>
+          <%= e %>
+        </option>
+      <% }) %>
+    </select>
+  </td>
+  <td>
+    <select class="responsable-select" data-id="<%= r.id %>">
+      <% users.forEach(u => { %>
+        <option value="<%= u.name %>" <%= r.responsible === u.name ? "selected" : "" %>>
+          <%= u.first_name %>
+        </option>
+      <% }) %>
+    </select>
+  </td>
+  <td><%= r.created_at.toLocaleDateString("es-CO") %></td>
+  <td><%= r.typology %></td>
+</tr>
+
+</body>
+</html>

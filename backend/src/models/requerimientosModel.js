@@ -2,7 +2,7 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/dbconfig.js";
 
-class Requirement extends Model {}
+class Requirement extends Model { }
 
 Requirement.init(
   {
@@ -16,22 +16,34 @@ Requirement.init(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
+    description: {                //  descripción
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
     status: {              //  estado
       type: DataTypes.STRING(50),
       allowNull: false,
     },
     responsible: {         //  responsable
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
+    },
+    typology: {         //  tipologia T1 O T2
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    start_date: {         //  fecha inicio
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    end_date: {         //  fecha que termino
+       type: DataTypes.DATE,
+      allowNull: true,
     },
     created_at: {          //  fecha
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
-    },
-    type: {                //  tipo
-      type: DataTypes.STRING(50),
-      allowNull: false,
     },
   },
   {

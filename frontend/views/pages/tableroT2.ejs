@@ -1,12 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tablero T2</title>
+  <link rel="stylesheet" href="/css/tableroT1.css">
+  <link rel="shortcut icon" href="/assets/monday_logo_icon.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+  <style>
+    .fade-out { 
+      opacity: 0; 
+      transform: translateY(30px);
+      transition: opacity .5s, transform .5s; 
+    }
+    .fade-in { 
+      opacity: 0; 
+      transform: translateY(-30px);
+      animation: fadeInMove .6s forwards ease; 
+    }
+    @keyframes fadeInMove { 
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      } 
+    }
+  </style>
 </head>
 <body>
-    <h1>TABLERO T2</h1>
-    
+  <h2>Legal - T2 Operación Portal 2025</h2>
+
+  <% function renderRow(r, estados, users) { %>
+    <tr data-id="<%= r.id %>">
+      <td><%= r.id %></td>
+      <td><%= r.name %></td>
+      <td><%= r.description %></td>
+
+      <!-- estado -->
+      <td>
+        <select class="estado-select" data-id="<%= r.id %>">
+          <% estados.forEach(e => { %>
+            <option value="<%= e %>" <%= r.status === e ? "selected" : "" %>><%= e %></option>
+          <% }) %>
+        </select>
+      </td>
+
+      <!-- responsable -->
+      <td>
+        <select class="responsable-select" data-id="<%= r.id %>">
+          <option value="">-- Sin asignar --</option>
+          <% users.forEach(u => {
+              const label = (u.first_name || "") + (u.last_name ? (" " + u.last_name) : "");
+          %>
+            <option value="<%= label %>" <%= (r.responsible && r.responsible === label) ? "selected" : "" %>>
+              <%= label %>
+            </option>
+          <% }) %>
+        </select>
+      </td>
+
+      <!-- fechas -->
+      <td><%= r.start_date ? new Date(r.start_date).toLocaleDateString("es-CO") : "-" %></td>
+      <td><%= r.end_date ? new Date(r.end_date).toLocaleDateString("es-CO") : "-" %></td>
+      <td><%= new Date(r.created_at).toLocaleDateString("es-CO") %></td>
+
+      <td><%= r.typology %></td>
+    </tr>
+  <% } %>
+
+  <!-- COMPROMISO -->
+  <section class="section-tablero-t1">
+    <div class="container-table-uno">
+      <table class="table-compromiso-t1">
+        <p class="titulo-tabla">Compromiso diario</p>
+        <thead>
+          <div class="barra-color-thead"></div>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Creado</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody id="compromiso-body">
+          <% requerimientos.filter(r => r.typology === "T2" && r.status === "compromiso").forEach(r => { %>
+            <%= renderRow(r, estados, users) %>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- IMPLEMENTACIÓN -->
+  <section class="section-tablero-t1">
+    <div class="container-table-uno">
+      <table class="table-compromiso-t1">
+        <p class="titulo-tabla">Implementación</p>
+        <thead>
+          <div class="barra-color-thead"></div>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Creado</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody id="implementacion-body">
+          <% requerimientos.filter(r => r.typology === "T2" && r.status === "implementacion").forEach(r => { %>
+            <%= renderRow(r, estados, users) %>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- QA/REVISIÓN -->
+  <section class="section-tablero-t1">
+    <div class="container-table-uno">
+      <table class="table-compromiso-t1">
+        <p class="titulo-tabla">QA / Revisión</p>
+        <thead>
+          <div class="barra-color-thead"></div>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Creado</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody id="qa-body">
+          <% requerimientos.filter(r => r.typology === "T2" && r.status === "qa/revision").forEach(r => { %>
+            <%= renderRow(r, estados, users) %>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+<script src="/js/funcionalidadesTableros.js"></script>
+
 </body>
 </html>

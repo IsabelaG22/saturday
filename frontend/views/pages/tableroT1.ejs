@@ -1,61 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablero T1</title>
-    <link rel="stylesheet" href="/css/tableroT1.css">
-    <link rel="shortcut icon" href="/assets/monday_logo_icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tablero T1</title>
+  <link rel="stylesheet" href="/css/tableroT1.css">
+  <link rel="shortcut icon" href="/assets/monday_logo_icon.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+  <style>
+   .fade-out { 
+  opacity: 0; 
+  transform: translateY(30px); /* hacia abajo */
+  transition: opacity .5s, transform .5s; 
+}
+
+.fade-in { 
+  opacity: 0; 
+  transform: translateY(-30px); /* viene desde arriba */
+  animation: fadeInMove .6s forwards ease; 
+}
+
+@keyframes fadeInMove { 
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
+}
+
+  </style>
 </head>
-
 <body>
+  <h2>Legal - T1 Operación Portal 2025</h2>
 
-    <section class="section-tablero-t1">
-        <div class="container-table-uno">
-            <h2>Legal - T1 Operación Portal 2025</h2>
+  <% function renderRow(r, estados, users) { %>
+    <tr data-id="<%= r.id %>">
+      <td><%= r.id %></td>
+      <td><%= r.name %></td>
+      <td><%= r.description %></td>
 
-            <table class="table-compromiso-t1">
-            <p class="titulo-tabla">Compromiso diario</p>
+      <!-- estado -->
+      <td>
+        <select class="estado-select" data-id="<%= r.id %>">
+          <% estados.forEach(e => { %>
+            <option value="<%= e %>" <%= r.status === e ? "selected" : "" %>><%= e %></option>
+          <% }) %>
+        </select>
+      </td>
 
-                <thead>
-                    <div class="barra-color-thead"></div>
+      <!-- responsable -->
+      <td>
+        <select class="responsable-select" data-id="<%= r.id %>">
+          <option value="">-- Seleccionar --</option>
+          <% users.forEach(user => { %>
+            <option value="<%= user.first_name %> <%= user.last_name %>" 
+              <%= r.responsible === (user.first_name + " " + user.last_name) ? "selected" : "" %>>
+              <%= user.first_name %> <%= user.last_name %>
+            </option>
+          <% }) %>
+        </select>
+      </td>
 
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Estado</th>
-                        <th>responsable</th>
-                        <th>Fecha</th>
-                        <th>Tipo</th>
-                    </tr>
-                </thead>
+      <!-- fechas -->
+      <td><%= r.start_date ? new Date(r.start_date).toLocaleDateString("es-CO") : "-" %></td>
+      <td><%= r.end_date ? new Date(r.end_date).toLocaleDateString("es-CO") : "-" %></td>
+      <td><%= new Date(r.created_at).toLocaleDateString("es-CO") %></td>
 
-                <tbody>
-                    <div class="barra-color-tbody"></div>
+      <!-- tipo -->
+      <td><%= r.typology %></td>
+    </tr>
+  <% } %>
 
-                    <tr>
-                        <td>12345</td>
-                        <td>Urls huerfana</td>
-                        <td>En Proceso</td>
-                        <td>Juan Perez</td>
-                        <td>12/06/2024</td>
-                        <td>Contrato</td>
-                    </tr>
-                       <tr>
-                        <td>12345</td>
-                        <td>Urls huerfana</td>
-                        <td>En Proceso</td>
-                        <td>Juan Perez</td>
-                        <td>12/06/2024</td>
-                        <td>Contrato</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+  <!-- COMPROMISO -->
+  <section class="section-tablero-t1">
+    <div class="container-table-uno">
+      <table class="table-compromiso-t1">
+        <p class="titulo-tabla">Compromiso diario</p>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Creado</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody id="compromiso-body">
+          <% requerimientos.filter(r => r.status === "compromiso").forEach(r => { %>
+            <%= renderRow(r, estados, users) %>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
+  <!-- IMPLEMENTACIÓN -->
+  <section class="section-tablero-t1">
+    <div class="container-table-uno">
+      <table class="table-compromiso-t1">
+        <p class="titulo-tabla">Implementación</p>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Creado</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody id="implementacion-body">
+          <% requerimientos.filter(r => r.status === "implementacion").forEach(r => { %>
+            <%= renderRow(r, estados, users) %>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- QA/REVISIÓN -->
+  <section class="section-tablero-t1">
+    <div class="container-table-uno">
+      <table class="table-compromiso-t1">
+        <p class="titulo-tabla">QA / Revisión</p>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Creado</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody id="qa-body">
+          <% requerimientos.filter(r => r.status === "qa/revision").forEach(r => { %>
+            <%= renderRow(r, estados, users) %>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    async function actualizarCampo(id, campo, valor, fila) {
+      try {
+        const body = (campo === "responsible") ? { responsible: valor } : { [campo]: valor };
+        const res = await fetch(`/requerimientos/${id}/update`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message || "Error server");
+
+        if (campo === "status") moverFila(fila, valor);
+      } catch (err) {
+        console.error("Error actualizando:", err);
+        alert("Error actualizando (mira consola)");
+      }
+    }
+
+    function moverFila(fila, nuevoEstado) {
+      const compromBody = document.getElementById("compromiso-body");
+      const implemBody = document.getElementById("implementacion-body");
+      const qaBody = document.getElementById("qa-body");
+
+      fila.classList.add("fade-out");
+      setTimeout(() => {
+        if (nuevoEstado === "compromiso") compromBody.appendChild(fila);
+        if (nuevoEstado === "implementacion") implemBody.appendChild(fila);
+        if (nuevoEstado === "qa/revision") qaBody.appendChild(fila);
+
+        fila.classList.remove("fade-out");
+        fila.classList.add("fade-in");
+        setTimeout(() => fila.classList.remove("fade-in"), 600);
+      }, 450);
+    }
+
+    document.body.addEventListener("change", e => {
+      const target = e.target;
+      if (target.classList.contains("estado-select")) {
+        actualizarCampo(target.dataset.id, "status", target.value, target.closest("tr"));
+      }
+      if (target.classList.contains("responsable-select")) {
+        actualizarCampo(target.dataset.id, "responsible", target.value, target.closest("tr"));
+      }
+    });
+  </script>
 </body>
-
 </html>

@@ -6,11 +6,12 @@ import sequelize from "../config/dbconfig.js";
 class User extends Model { }
 
 User.init({
-  id_document: {                // antes: cedula_id
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    allowNull: false
-  },
+id_document: {  //Antes cedula id
+  type: DataTypes.STRING(20),
+  primaryKey: true,
+  allowNull: false
+},
+
   first_name: {             // antes: nombre
     type: DataTypes.STRING(100),
     allowNull: false
