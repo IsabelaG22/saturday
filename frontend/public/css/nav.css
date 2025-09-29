@@ -3,6 +3,7 @@ nav.nav-info-prin {
   padding: 10px 10px 10px 0px;
   gap: 16px;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 /* por defecto en modo claro */
 .icon-barra-lateral {

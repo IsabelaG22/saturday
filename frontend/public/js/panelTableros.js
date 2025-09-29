@@ -186,7 +186,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }</p>
       `;
 
-      modalOpenFull.href = `/requerimientos?id=${id}`;
+      // ✅ Solo si existe el botón se le asigna href
+      if (modalOpenFull) {
+        modalOpenFull.href = `/requerimientos?id=${id}`;
+      }
+
       bsModal.show();
 
       // Resaltar fila si existe en tabla actual

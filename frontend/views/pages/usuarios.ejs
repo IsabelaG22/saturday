@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Usuarios</title>
-      <link rel="shortcut icon" href="/assets/monday_logo_icon.png" type="image/x-icon">
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <!-- Panel lateral reutilizado -->
-    <%- include('../partials/nav.ejs') %>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usuarios</title>
+  <link rel="shortcut icon" href="/assets/monday_logo_icon.png" type="image/x-icon">
+
+</head>
+
+<body>
+  <!-- Panel lateral reutilizado -->
+  <%- include('../partials/nav.ejs') %>
 
     <div class="container mt-5">
       <h2 class="mb-4">Lista de Usuarios</h2>
@@ -27,20 +25,30 @@
           </tr>
         </thead>
         <tbody>
-          <% if (usuarios.length > 0) { %> <% usuarios.forEach(u => { %>
-          <tr>
-            <td><%= u.id %></td>
-            <td><%= u.email %></td>
-            <td><%= u.role %></td>
-            <td><%= u.createdAt ? u.createdAt.toLocaleDateString() : '' %></td>
-          </tr>
-          <% }) %> <% } else { %>
-          <tr>
-            <td colspan="4" class="text-center">No hay usuarios registrados</td>
-          </tr>
-          <% } %>
+          <% if (usuarios.length> 0) { %> <% usuarios.forEach(u=> { %>
+              <tr>
+                <td>
+                  <%= u.id %>
+                </td>
+                <td>
+                  <%= u.email %>
+                </td>
+                <td>
+                  <%= u.role %>
+                </td>
+                <td>
+                  <%= u.createdAt ? u.createdAt.toLocaleDateString() : '' %>
+                </td>
+              </tr>
+              <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="4" class="text-center">No hay usuarios registrados</td>
+                  </tr>
+                  <% } %>
         </tbody>
       </table>
     </div>
-  </body>
+</body>
+
 </html>

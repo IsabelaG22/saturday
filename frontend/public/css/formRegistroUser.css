@@ -1,16 +1,9 @@
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
 
     /* Oculto por defecto */
     .modal-register {
         display: none;
         position: fixed;
         inset: 0;
-        /* top, right, bottom, left en 0 */
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.5);
