@@ -5,14 +5,15 @@ import bcrypt from "bcrypt";
 
 
 // GET all users
-router.get('/usuarios', async (req, res) => {
-  const users = await User.findAll(); // Busca todos los usuarios
-  res.status(200).json({
-    ok: true,
-    status: 200,
-    message: "Users retrieved successfully",
-    body: users
-  });
+// Vista de usuarios
+router.get("/usuarios", async (req, res) => {
+  try {
+    const usuarios = await User.findAll(); // Obtener todos los usuarios
+    res.render("usuarios", { usuarios }); // Renderizar vista
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).send("Error en el servidor");
+  }
 });
 
 // POST Crear nuevo usuario
@@ -20,35 +21,51 @@ router.post("/usuarios", async (req, res) => {
   try {
     await User.sync(); // opcional si la tabla ya existe
 
-     const { id_document, first_name, last_name, email, password, role } = req.body;
-
+    const { id_document, first_name, last_name, email, password, role } = req.body;
 
     // Verificar si ya existe el correo
     const userExist = await User.findOne({ where: { email } });
     if (userExist) {
-      return res.status(400).json({ success: false, message: "El correo ya está registrado" });
+      return res.send(`
+        <script>
+          alert("El correo ya está registrado");
+          window.history.back(); // vuelve al formulario
+        </script>
+      `);
     }
 
     // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Crear usuario
-    const newUser = await User.create({
+    await User.create({
       id_document,
       first_name,
       last_name,
       email,
-      password: hashedPassword, // Guardamos encriptada
+      password: hashedPassword,
       role
     });
 
-    res.json({ success: true, message: "Usuario registrado con éxito", user: newUser });
+    // ✅ Registro exitoso → redirige al inicio
+    return res.send(`
+      <script>
+        alert("Usuario registrado con éxito");
+        window.location.href = "/";
+      </script>
+    `);
 
   } catch (error) {
     console.error("Error en registro:", error);
-    res.status(500).json({ success: false, message: "Error en el servidor" });
+    return res.send(`
+      <script>
+        alert("Error en el servidor");
+        window.history.back();
+      </script>
+    `);
   }
 });
+
 
 // PUT update user (ejemplo de estructura)
 // router.put('/users/:id_card', async (req, res) => {

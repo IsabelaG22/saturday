@@ -1,0 +1,343 @@
+/* ----------------------------- */
+/* RESETEO Y FUENTES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* ----------------------------- */
+/* TITULOS TABLERO POR MODO */
+.titulo-tablero-operacion {
+  padding: 20px 40px;
+}
+body.light-mode .titulo-tablero-operacion {
+  color: #323338;
+}
+body.dark-mode .titulo-tablero-operacion {
+  color: #d5d8df;
+  padding: 20px 40px;
+}
+
+/* ----------------------------- */
+/* CONTENEDORES TABLAS */
+.section-tablero-t1 {
+  padding: 0 40px;
+}
+.container-table-uno {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: visible; 
+  border: 1px solid #c4c4c4;
+  border-radius: 6px;
+  width: min-content;
+}
+
+/* -------------------------------------------------------------------------- */
+/* --- SCROLLBAR GLOBAL MEJORADA --- */
+/* -------------------------------------------------------------------------- */
+.scrollbar-global {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 14px; /* más delgada */
+  background: #f1f1f5; /* gris clarito */
+  border-top: 1px solid #d0d0d0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  z-index: 9999;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #888 #f1f1f5;
+}
+
+.scrollbar-inner {
+  height: 1px;
+}
+
+/* Chrome, Edge y Safari */
+.scrollbar-global::-webkit-scrollbar {
+  height: 12px;
+}
+.scrollbar-global::-webkit-scrollbar-track {
+  background: #f1f1f5;
+  border-radius: 8px;
+}
+.scrollbar-global::-webkit-scrollbar-thumb {
+  background: #b0b0b5;
+  border-radius: 8px;
+  border: 2px solid #f1f1f5;
+}
+.scrollbar-global::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+/* -------------------------------------------------------------------------- */
+/* --- SOLUCIÓN TABLA STICKY Y SCROLL HORIZONTAL --- */
+/* -------------------------------------------------------------------------- */
+.table-compromiso-t1 {
+  min-width: 900px; 
+  width: 100%; 
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed; 
+  border-radius: 6px;
+  overflow: hidden;
+}
+.table-compromiso-t1 th,
+.table-compromiso-t1 td {
+  border: 1px solid #c4c4c4; 
+  padding: 10px;
+  text-align: left;
+  width: 200px;
+}
+.sticky-col-1 {
+  position: sticky;
+  left: 0;
+  z-index: 10; 
+}
+body.light-mode .sticky-col-1 {
+  background-color: #ffffff;
+}
+body.light-mode .table-compromiso-t1 thead .sticky-col-1 {
+  background-color: #ffffff;
+}
+body.dark-mode .sticky-col-1 {
+  background-color: #30324e;
+}
+body.dark-mode .table-compromiso-t1 thead .sticky-col-1 {
+  background-color: #30324e;
+}
+
+/* ----------------------------- */
+/* MODO OSCURO */
+body.dark-mode table.table-compromiso-t1 thead {
+  background-color: #30324e;
+}
+body.dark-mode table.table-compromiso-t1 tbody tr {
+  background-color: #30324e;
+}
+body.dark-mode .table-compromiso-t1 tbody tr:hover {
+  background-color: #2f3147; 
+  box-shadow: 0 4px 6px -2px rgba(108, 111, 141, 0.7); 
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* ----------------------------- */
+/* MODO CLARO */
+body.light-mode table.table-compromiso-t1 thead {
+  background-color: #ffffff;
+}
+body.light-mode table.table-compromiso-t1 tbody tr {
+  background-color: #ffffff;
+}
+body.light-mode .table-compromiso-t1 tbody tr:hover {
+  background-color: #f5f6fa;
+  box-shadow: 0 4px 6px -2px rgba(180, 180, 180, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* ----------------------------- */
+/* TITULOS SECCIONES */
+.titulo-tabla {
+  font-size: 24px;
+  letter-spacing: -0.1px;
+  font-weight: 800;
+}
+.titulo-tabla.compromiso { color: rgb(3, 127, 76); }
+.titulo-tabla.implementacion { color: rgb(102, 204, 255); }
+.titulo-tabla.qa-revision { color: rgb(120, 75, 209); }
+
+/* ----------------------------- */
+/* EFECTOS DE MOVIMIENTO */
+.fade-out {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.fade-in {
+  opacity: 0;
+  transform: translateY(-30px);
+  animation: fadeInMove 0.6s forwards ease;
+}
+@keyframes fadeInMove {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ----------------------------- */
+/* DROPDOWN ESTADOS */
+.estado-dropdown {
+  justify-content: center;
+  display: flex;
+  font-size: 14px;
+}
+.estado-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+.estado-menu {
+  display: none;
+  position: absolute;
+  background: #2f3147;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 4px;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+.estado-opcion {
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin: 4px 0;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+}
+.estado-opcion:hover { opacity: 0.8; }
+.estado-compromiso { background: #359970; }
+.estado-implementacion { background: #85d6ff; }
+.estado-qa-revision { background: #339ecd; }
+
+/* ----------------------------- */
+/* DROPDOWN RESPONSABLE */
+.responsable-dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  left: 37px;
+}
+.responsable-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.avatar-color-0 { background: #ff6b6b; }
+.avatar-color-1 { background: #4dabf7; }
+.avatar-color-2 { background: #51cf66; }
+.avatar-color-3 { background: #f59f00; }
+.avatar-color-4 { background: #845ef7; }
+.avatar-color-5 { background: #20c997; }
+.avatar-color-6 { background: #e64980; }
+.avatar-color-7 { background: #adb5bd; }
+.responsable-avatar.empty {
+  background: #ccc;
+  color: #444;
+}
+.responsable-menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+body.dark-mode .responsable-menu {
+  background: #2f3147;
+  color: #fff;
+}
+.responsable-opcion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.responsable-opcion:hover { background: rgba(0,0,0,0.1); }
+body.dark-mode .responsable-opcion:hover { background: rgba(255,255,255,0.1); }
+
+/* -------------------------------------------------------------------------- */
+/* --- Tooltip flotante --- */
+.tooltip-float {
+  position: fixed;
+  z-index: 99999;
+  display: none;
+  max-width: 360px;
+  background: #ffffff;
+  color: #222;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  font-size: 13px;
+  line-height: 1.4;
+  pointer-events: none;        
+  white-space: normal;
+  word-break: break-word;
+}
+.tooltip-float.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .12s ease, transform .12s ease;
+}
+.tooltip-float::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: -1;
+}
+.tooltip-float.arrow-top::after { top: -6px; }
+.tooltip-float.arrow-bottom::after { bottom: -6px; }
+
+/* Celda truncada */
+.td-limitado {
+  max-width: 220px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  position: relative;
+}
+#searchResults li { cursor: pointer; }
+.table-highlight { background-color: #fff3cd !important; transition: background-color .4s; }
+
+/* Sticky columna */
+.table-compromiso-t1 th.sticky-col-1,
+.table-compromiso-t1 td.sticky-col-1 {
+  position: sticky;
+  left: 0;
+  background-clip: padding-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 1px solid #c4c4c4;
+}
+.table-compromiso-t1 th.sticky-col-1 {
+  z-index: 60;
+  top: 0;
+}
+.table-compromiso-t1 td.sticky-col-1 {
+  z-index: 40;
+}
+.table-compromiso-t1 th.sticky-col-1,
+.table-compromiso-t1 td.sticky-col-1 {
+  min-width: 160px;
+  max-width: 220px;
+  padding-left: 12px;
+}

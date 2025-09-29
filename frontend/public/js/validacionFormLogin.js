@@ -49,14 +49,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.success) {
-        alert("✅ Bienvenido, redirigiendo a tu panel...");
-        window.location.href = data.redirectUrl; // t1, t2 o admin
+        // 👉 NUEVO: Guardar datos del usuario en localStorage
+        localStorage.setItem("user", JSON.stringify({
+          email: data.email,
+          role: data.role
+        }));
+
+        // Redirigir según rol
+        window.location.href = data.redirectUrl; 
       } else {
-        alert("❌ " + data.message);
+        alert("Error: " + data.message);
       }
 
     } catch (err) {
-      alert("⚠️ Error en el servidor, intenta más tarde.");
+      alert("Error en el servidor, intenta más tarde.");
     }
   });
 });

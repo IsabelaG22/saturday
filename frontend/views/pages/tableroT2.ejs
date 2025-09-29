@@ -4,155 +4,248 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Tablero T2</title>
-  <link rel="stylesheet" href="/css/tableroT1.css">
+  <link rel="stylesheet" href="/css/tableros.css">
   <link rel="shortcut icon" href="/assets/monday_logo_icon.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@6.2.5/dist/simplebar.min.css" />
 
+  <!-- ESTILOS MÍNIMOS PARA QUE STICKY FUNCIONE CON SCROLL GLOBAL -->
   <style>
-    .fade-out { 
-      opacity: 0; 
-      transform: translateY(30px);
-      transition: opacity .5s, transform .5s; 
+    /* Un único contenedor scroll horizontal para TODAS las tablas */
+    .global-scroll {
+      overflow-x: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
     }
-    .fade-in { 
-      opacity: 0; 
-      transform: translateY(-30px);
-      animation: fadeInMove .6s forwards ease; 
+
+    /* Aseguramos que las tablas mantengan su ancho mínimo para forzar scroll cuando haga falta */
+    .table-compromiso-t1 {
+      min-width: 900px; /* mantiene tu valor */
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
     }
-    @keyframes fadeInMove { 
-      to { 
-        opacity: 1; 
-        transform: translateY(0); 
-      } 
+
+    /* Asegurar sticky de encabezados (si aplica) */
+    .table-compromiso-t1 thead th {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background-clip: padding-box;
     }
+
+    /* REFORZAR sticky de la primera columna */
+    .table-compromiso-t1 th.sticky-col-1,
+    .table-compromiso-t1 td.sticky-col-1 {
+      position: sticky;
+      left: 0;
+      z-index: 70;
+      background-clip: padding-box;
+      /* background: inherit;  <-- si necesitas que tome color del modo, descomenta */
+    }
+
+    /* Evitar que ancestros con transform interfieran: si algún contenedor tuyo tiene transform,
+       sticky no funcionará. Revisa si aplicas transform en tu layout principal. */
   </style>
 </head>
 <body>
-  <h2>Legal - T2 Operación Portal 2025</h2>
+  <%- include('../partials/nav.ejs') %>
+
+  <h2 class="titulo-tablero-operacion">Legal - T2 Operación Portal 2025</h2>
 
   <% function renderRow(r, estados, users) { %>
     <tr data-id="<%= r.id %>">
+      <td class="sticky-col-1 td-limitado" data-full="<%= encodeURIComponent(String(r.name || '')) %>">
+        <%= r.name %>
+      </td>
       <td><%= r.id %></td>
-      <td><%= r.name %></td>
-      <td><%= r.description %></td>
-
-      <!-- estado -->
-      <td>
-        <select class="estado-select" data-id="<%= r.id %>">
-          <% estados.forEach(e => { %>
-            <option value="<%= e %>" <%= r.status === e ? "selected" : "" %>><%= e %></option>
-          <% }) %>
-        </select>
+      <td class="td-limitado" data-full="<%= encodeURIComponent(String(r.description || '')) %>">
+        <%= r.description %>
       </td>
-
-      <!-- responsable -->
       <td>
-        <select class="responsable-select" data-id="<%= r.id %>">
-          <option value="">-- Sin asignar --</option>
-          <% users.forEach(u => {
-              const label = (u.first_name || "") + (u.last_name ? (" " + u.last_name) : "");
+        <div class="estado-dropdown" data-id="<%= r.id %>">
+          <%
+            let claseEstado =
+              r.status==="compromiso" ? "estado-compromiso" :
+              r.status==="implementacion" ? "estado-implementacion" :
+              r.status==="qa/revision" ? "estado-qa-revision" : "";
           %>
-            <option value="<%= label %>" <%= (r.responsible && r.responsible === label) ? "selected" : "" %>>
-              <%= label %>
-            </option>
-          <% }) %>
-        </select>
+          <button class="estado-btn <%= claseEstado %>">
+            <%= r.status %> ▼
+          </button>
+          <div class="estado-menu">
+            <div class="estado-opcion estado-compromiso" data-value="compromiso">Compromiso</div>
+            <div class="estado-opcion estado-implementacion" data-value="implementacion">Implementación</div>
+            <div class="estado-opcion estado-qa-revision" data-value="qa/revision">QA / Revisión</div>
+          </div>
+        </div>
       </td>
-
-      <!-- fechas -->
+      <td>
+        <div class="responsable-dropdown" data-id="<%= r.id %>">
+          <% 
+            if (r.responsible) { 
+              const parts = (r.responsible || "").split(/\s+/).filter(Boolean);
+              const initials = (parts.slice(0,2).map(p => p[0]).join('') || r.responsible[0]).toUpperCase();
+              const colorIndex = (r.responsible.charCodeAt(0) || 65) % 8;
+          %>
+            <div class="responsable-avatar avatar-color-<%= colorIndex %>"><%= initials %></div>
+          <% } else { %>
+            <div class="responsable-avatar empty">+</div>
+          <% } %>
+          <div class="responsable-menu">
+            <% users.forEach(user => { 
+                 const fullName = (user.first_name || "") + (user.last_name ? (" " + user.last_name) : "");
+                 const nameParts = fullName.split(/\s+/).filter(Boolean);
+                 const initials = (nameParts.slice(0,2).map(p=>p[0]).join('') || (fullName[0]||'+')).toUpperCase();
+                 const colorIndex = (fullName.charCodeAt(0) || 65) % 8;
+            %>
+              <div class="responsable-opcion" data-value="<%= fullName %>">
+                <div class="responsable-avatar avatar-color-<%= colorIndex %>"><%= initials %></div>
+                <span><%= fullName %></span>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </td>
       <td><%= r.start_date ? new Date(r.start_date).toLocaleDateString("es-CO") : "-" %></td>
       <td><%= r.end_date ? new Date(r.end_date).toLocaleDateString("es-CO") : "-" %></td>
       <td><%= new Date(r.created_at).toLocaleDateString("es-CO") %></td>
-
       <td><%= r.typology %></td>
     </tr>
   <% } %>
 
-  <!-- COMPROMISO -->
-  <section class="section-tablero-t1">
-    <div class="container-table-uno">
-      <table class="table-compromiso-t1">
-        <p class="titulo-tabla">Compromiso diario</p>
-        <thead>
-          <div class="barra-color-thead"></div>
-          <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Responsable</th>
-            <th>Fecha inicio</th>
-            <th>Fecha fin</th>
-            <th>Creado</th>
-            <th>Tipo</th>
-          </tr>
-        </thead>
-        <tbody id="compromiso-body">
-          <% requerimientos.filter(r => r.typology === "T2" && r.status === "compromiso").forEach(r => { %>
-            <%= renderRow(r, estados, users) %>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  </section>
+  <!-- AQUI: UN SOLO CONTENEDOR SCROLL (global) que contiene todas las tablas -->
+  <div class="global-scroll">
+    <!-- COMPROMISO -->
+    <section class="section-tablero-t1">
+      <p class="titulo-tabla compromiso">Compromiso diario</p>
+      <div class="container-table-uno">
+        <!-- eliminado wrapper individual; tabla directa -->
+        <table class="table-compromiso-t1">
+          <thead>
+            <tr>
+              <th class="sticky-col-1">Nombre</th>
+              <th>Id</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Responsable</th>
+              <th>Fecha inicio</th>
+              <th>Fecha fin</th>
+              <th>Creado</th>
+              <th>Tipo</th>
+            </tr>
+          </thead>
+          <tbody id="compromiso-body">
+            <% requerimientos.filter(r => r.typology === "T2" && r.status === "compromiso").forEach(r => { %>
+              <%= renderRow(r, estados, users) %>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <!-- IMPLEMENTACIÓN -->
-  <section class="section-tablero-t1">
-    <div class="container-table-uno">
-      <table class="table-compromiso-t1">
-        <p class="titulo-tabla">Implementación</p>
-        <thead>
-          <div class="barra-color-thead"></div>
-          <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Responsable</th>
-            <th>Fecha inicio</th>
-            <th>Fecha fin</th>
-            <th>Creado</th>
-            <th>Tipo</th>
-          </tr>
-        </thead>
-        <tbody id="implementacion-body">
-          <% requerimientos.filter(r => r.typology === "T2" && r.status === "implementacion").forEach(r => { %>
-            <%= renderRow(r, estados, users) %>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <!-- IMPLEMENTACION -->
+    <section class="section-tablero-t1">
+      <p class="titulo-tabla implementacion">Implementación</p>
+      <div class="container-table-uno">
+        <table class="table-compromiso-t1">
+          <thead>
+            <tr>
+              <th class="sticky-col-1">Nombre</th>
+              <th>Id</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Responsable</th>
+              <th>Fecha inicio</th>
+              <th>Fecha fin</th>
+              <th>Creado</th>
+              <th>Tipo</th>
+            </tr>
+          </thead>
+          <tbody id="implementacion-body">
+            <% requerimientos.filter(r => r.typology === "T2" && r.status === "implementacion").forEach(r => { %>
+              <%= renderRow(r, estados, users) %>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <!-- QA/REVISIÓN -->
-  <section class="section-tablero-t1">
-    <div class="container-table-uno">
-      <table class="table-compromiso-t1">
-        <p class="titulo-tabla">QA / Revisión</p>
-        <thead>
-          <div class="barra-color-thead"></div>
-          <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Responsable</th>
-            <th>Fecha inicio</th>
-            <th>Fecha fin</th>
-            <th>Creado</th>
-            <th>Tipo</th>
-          </tr>
-        </thead>
-        <tbody id="qa-body">
-          <% requerimientos.filter(r => r.typology === "T2" && r.status === "qa/revision").forEach(r => { %>
-            <%= renderRow(r, estados, users) %>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <!-- QA/REVISION -->
+    <section class="section-tablero-t1">
+      <p class="titulo-tabla qa-revision">QA / Revisión</p>
+      <div class="container-table-uno">
+        <table class="table-compromiso-t1">
+          <thead>
+            <tr>
+              <th class="sticky-col-1">Nombre</th>
+              <th>Id</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Responsable</th>
+              <th>Fecha inicio</th>
+              <th>Fecha fin</th>
+              <th>Creado</th>
+              <th>Tipo</th>
+            </tr>
+          </thead>
+          <tbody id="qa-body">
+            <% requerimientos.filter(r => r.typology === "T2" && r.status === "qa/revision").forEach(r => { %>
+              <%= renderRow(r, estados, users) %>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div> <!-- cierre global-scroll -->
 
-<script src="/js/funcionalidadesTableros.js"></script>
+  <!-- Barra global flotante (la que ya tenías) -->
+  <div class="scrollbar-global" aria-hidden="true">
+    <div class="scrollbar-inner"></div>
+  </div>
 
+  <div id="tooltip" class="tooltip-float"></div>
+
+  <script>
+    // Sincroniza la barra-global con el contenedor .global-scroll
+    document.addEventListener('DOMContentLoaded', () => {
+      const globalScroll = document.querySelector('.global-scroll');
+      const scrollbar = document.querySelector('.scrollbar-global');
+      const inner = scrollbar && scrollbar.querySelector('.scrollbar-inner');
+      if (!globalScroll || !scrollbar || !inner) return;
+
+      function updateInnerWidth() {
+        // Ponemos el ancho del contenido total para que la barra tenga el rango correcto
+        inner.style.width = globalScroll.scrollWidth + 'px';
+      }
+      updateInnerWidth();
+      window.addEventListener('resize', updateInnerWidth);
+
+      // sincronización bidireccional
+      let syncing = false;
+      scrollbar.addEventListener('scroll', () => {
+        if (syncing) return;
+        syncing = true;
+        globalScroll.scrollLeft = scrollbar.scrollLeft;
+        syncing = false;
+      }, { passive: true });
+
+      globalScroll.addEventListener('scroll', () => {
+        if (syncing) return;
+        syncing = true;
+        scrollbar.scrollLeft = globalScroll.scrollLeft;
+        syncing = false;
+      }, { passive: true });
+
+      // observar cambios en contenido (filas, ancho)
+      const mo = new MutationObserver(() => requestAnimationFrame(updateInnerWidth));
+      mo.observe(globalScroll, { childList: true, subtree: true, attributes: true });
+    });
+  </script>
+
+  <script src="/js/funcionalidadesTableros.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simplebar@6.2.5/dist/simplebar.min.js"></script>
+  <script src="/js/funcionalidadesTableros.js"></script>
 </body>
 </html>

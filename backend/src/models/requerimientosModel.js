@@ -17,7 +17,7 @@ Requirement.init(
       allowNull: false,
     },
     description: {                //  descripción
-      type: DataTypes.STRING(100),
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     status: {              //  estado
