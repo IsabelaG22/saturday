@@ -321,55 +321,12 @@ body.dark-mode .responsable-opcion:hover {
 }
 
 /* -------------------------------------------------------------------------- */
-/* --- Tooltip flotante --- */
-.tooltip-float {
-  position: fixed;
-  z-index: 99999;
-  display: none;
-  max-width: 360px;
-  background: #ffffff;
-  color: #222;
-  padding: 10px 12px;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-  font-size: 13px;
-  line-height: 1.4;
-  pointer-events: none;        
-  white-space: normal;
-  word-break: break-word;
-}
 
-.tooltip-float.show {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity .12s ease, transform .12s ease;
-}
-
-.tooltip-float::after {
-  content: "";
-  position: absolute;
-  left: calc(50% - 6px);
-  width: 12px;
-  height: 12px;
-  background: #fff;
-  transform: rotate(45deg);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  z-index: -1;
-}
-
-.tooltip-float.arrow-top::after {
-  top: -6px;
-}
-.tooltip-float.arrow-bottom::after {
-  bottom: -6px;
-}
 
 /* asegurarse de que la celda truncada tenga cursor */
 .td-limitado {
   max-width: 220px;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
   position: relative;
@@ -385,7 +342,6 @@ body.dark-mode .responsable-opcion:hover {
   position: sticky;
   left: 0;
   background-clip: padding-box;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   border-right: 1px solid #c4c4c4;
@@ -421,3 +377,38 @@ body.dark-mode .responsable-opcion:hover {
 .scrollbar-inner {
   height: 1px;
 }
+
+    /* Un único contenedor scroll horizontal para TODAS las tablas */
+    .global-scroll {
+      overflow-x: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Aseguramos que las tablas mantengan su ancho mínimo para forzar scroll cuando haga falta */
+    .table-compromiso-t1 {
+      min-width: 900px; /* mantiene tu valor */
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    /* Asegurar sticky de encabezados (si aplica) */
+    .table-compromiso-t1 thead th {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background-clip: padding-box;
+    }
+
+    /* REFORZAR sticky de la primera columna */
+    .table-compromiso-t1 th.sticky-col-1,
+    .table-compromiso-t1 td.sticky-col-1 {
+      position: sticky;
+      left: 0;
+      z-index: 70;
+      background-clip: padding-box;
+    }
+
+  

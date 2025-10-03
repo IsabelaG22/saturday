@@ -8,7 +8,6 @@ import morgan from "morgan";
 dotenv.config();
 
 import indexRoutes from './routes/routes.js'; 
-// import { connectDB } from './config/dbconfig.js'; 
 
 const app = express();
 
@@ -21,10 +20,10 @@ app.use(express.static(join(__dirname, '../../frontend/public')));
 app.use(morgan('dev'));
 app.use(cors());
 
-// ✅ Para leer JSON (fetch, axios, etc.)
+//  Para leer JSON (fetch, axios, etc.)
 app.use(express.json());
 
-// ✅ Para leer formularios HTML (application/x-www-form-urlencoded)
+// Para leer formularios HTML (application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas
@@ -37,5 +36,3 @@ app.listen(PORT, () => {
   console.log(`---------------------------Servidor corriendo en http://localhost:${PORT}------------------`);
 });
 
-//   connectDB().then(() => {
-// });

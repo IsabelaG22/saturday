@@ -7,53 +7,7 @@
   <title>Tablero T1</title>
   <link rel="shortcut icon" href="/assets/monday_logo_icon.png" type="image/x-icon">
 
-  <!-- Estilos mínimos y seguros para sticky + scroll global -->
-  <style>
-    /* Un único contenedor scroll horizontal para TODAS las tablas de T1 */
-    .global-scroll {
-      overflow-x: auto;
-      overflow-y: visible;
-      -webkit-overflow-scrolling: touch;
-      width: 100%;
-    }
 
-    /* Mantener ancho mínimo de la tabla para forzar el scroll cuando haga falta */
-    .table-compromiso-t1 {
-      min-width: 900px; /* conserva tu valor */
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-
-    /* Reforzar sticky de la primera columna sin tocar el resto de tu CSS */
-    .container-table-uno .table-compromiso-t1 th.sticky-col-1,
-    .container-table-uno .table-compromiso-t1 td.sticky-col-1 {
-      position: sticky;
-      left: 0;
-      z-index: 60;
-      background-clip: padding-box;
-    }
-
-    /* Si quieres que el TH (celda del header de la primera columna) no se tape, puedes aumentar z-index */
-    .container-table-uno .table-compromiso-t1 thead th.sticky-col-1 {
-      z-index: 80;
-    }
-
-    /* La barra global - visual mínima (si ya la tienes en CSS, no hace daño) */
-    .scrollbar-global {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 16px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      z-index: 9999;
-      background: rgba(255,255,255,0.9);
-      border-top: 1px solid #e6e6e6;
-    }
-    .scrollbar-inner { height: 1px; }
-  </style>
 </head>
 
 <body>
@@ -217,44 +171,8 @@
     <div class="scrollbar-inner"></div>
   </div>
 
-  <!-- Tooltip flotante -->
-  <div id="tooltip-float" class="tooltip-float"></div>
 
-  <!-- Sincronizador mínimo: barra global <-> contenedor .global-scroll -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const globalScroll = document.querySelector('.global-scroll');
-      const scrollbar = document.querySelector('.scrollbar-global');
-      const inner = scrollbar && scrollbar.querySelector('.scrollbar-inner');
-      if (!globalScroll || !scrollbar || !inner) return;
 
-      function updateInnerWidth() {
-        inner.style.width = globalScroll.scrollWidth + 'px';
-      }
-      updateInnerWidth();
-      window.addEventListener('resize', updateInnerWidth);
-
-      let syncing = false;
-      scrollbar.addEventListener('scroll', () => {
-        if (syncing) return;
-        syncing = true;
-        globalScroll.scrollLeft = scrollbar.scrollLeft;
-        syncing = false;
-      }, { passive: true });
-
-      globalScroll.addEventListener('scroll', () => {
-        if (syncing) return;
-        syncing = true;
-        scrollbar.scrollLeft = globalScroll.scrollLeft;
-        syncing = false;
-      }, { passive: true });
-
-      const mo = new MutationObserver(() => requestAnimationFrame(updateInnerWidth));
-      mo.observe(globalScroll, { childList: true, subtree: true, attributes: true });
-    });
-  </script>
-
-  <!-- Tus scripts -->
   <script src="/js/funcionalidadesTableros.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/simplebar@6.2.5/dist/simplebar.min.js"></script>
 </body>

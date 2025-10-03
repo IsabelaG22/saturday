@@ -37,13 +37,13 @@
 
             const data = await res.json();
             if (data.ok) {
-              alert("✅ Requerimiento creado correctamente");
+              alert(" Requerimiento creado correctamente");
               window.location.reload();
             } else {
-              alert("❌ Error: " + data.message);
+              alert(" Error: " + data.message);
             }
           } catch (error) {
             console.error("Error:", error);
-            alert("❌ No se pudo registrar el requerimiento");
+            alert(" No se pudo registrar el requerimiento");
           }
         });

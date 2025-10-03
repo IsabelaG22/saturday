@@ -1,8 +1,8 @@
-// Import connection and sequelize datatypes
+// Importamos la conexion de la bd y clases de sequelize
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/dbconfig.js";
 
-class Requirement extends Model { }
+class Requirement extends Model {}
 
 Requirement.init(
   {
@@ -12,35 +12,43 @@ Requirement.init(
       autoIncrement: true,
       allowNull: false,
     },
-    name: {                //  nombre
+    name: {
+      //  nombre
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    description: {                //  descripción
+    description: {
+      //  descripción
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    status: {              //  estado
+    status: {
+      //  estado
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    responsible: {         //  responsable
+    responsible: {
+      //  responsable
       type: DataTypes.STRING(100),
       allowNull: true,
     },
-    typology: {         //  tipologia T1 O T2
+    typology: {
+      //  tipologia T1 O T2
       type: DataTypes.STRING(100),
       allowNull: true,
     },
-    start_date: {         //  fecha inicio
+    start_date: {
+      //  fecha inicio
       type: DataTypes.DATE,
       allowNull: true,
     },
-    end_date: {         //  fecha que termino
-       type: DataTypes.DATE,
+    end_date: {
+      //  fecha que termino
+      type: DataTypes.DATE,
       allowNull: true,
     },
-    created_at: {          //  fecha
+    created_at: {
+      //  fecha
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -49,8 +57,8 @@ Requirement.init(
   {
     sequelize,
     modelName: "Requirement", //  Requerimiento
-    tableName: "requirements", // nombre de la tabla en inglés (opcional, recomendado)
-    timestamps: false,         // porque ya tienes created_at manual
+    tableName: "requirements", // nombre de la tabla
+    timestamps: false,
   }
 );
 

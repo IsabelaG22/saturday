@@ -12,7 +12,7 @@ function aplicarTema(tema) {
     searchBtn.className = "btn btn-outline-light";
 
     closeBtns.forEach((btn) => {
-      btn.classList.add("btn-close-white"); // 🔥 blanco
+      btn.classList.add("btn-close-white"); //  blanco
     });
   } else {
     body.classList.add("light-mode");
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 👉 Mostrar enlace Usuarios y Requerimientos solo si es admin
+  // Mostrar enlace Usuarios y Requerimientos solo si es admin
   if (user.role === "admin") {
     const usuariosLink = document.getElementById("usuariosLink");
     if (usuariosLink) usuariosLink.style.display = "block";
@@ -92,7 +92,7 @@ toggle.addEventListener("click", () => {
 });
 
 // =============================
-// 🔍 Lógica de buscador transversal
+// Lógica de buscador transversal
 // =============================
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("searchInput");
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }</p>
       `;
 
-      // ✅ Solo si existe el botón se le asigna href
+      // Solo si existe el botón se le asigna href
       if (modalOpenFull) {
         modalOpenFull.href = `/requerimientos?id=${id}`;
       }

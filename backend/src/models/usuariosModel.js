@@ -6,37 +6,37 @@ import sequelize from "../config/dbconfig.js";
 class User extends Model { }
 
 User.init({
-id_document: {  //Antes cedula id
+id_document: {  //cedula id
   type: DataTypes.STRING(20),
   primaryKey: true,
   allowNull: false
 },
 
-  first_name: {             // antes: nombre
+  first_name: {             //  nombre
     type: DataTypes.STRING(100),
     allowNull: false
   },
-  last_name: {              // antes: apellido
+  last_name: {              //  apellido
     type: DataTypes.STRING(100),
     allowNull: false
   },
-  email: {                  // se mantiene igual (ya está en inglés)
+  email: {                  // correo
     type: DataTypes.STRING(100),
     allowNull: false,
     unique: true
   },
-  password: {               // se mantiene igual (ya está en inglés)
+  password: {               // contraseña
     type: DataTypes.STRING(255),
     allowNull: false
   },
-  role: {                   // antes: cargo
+  role: {                   //  cargo
     type: DataTypes.STRING(50),
     allowNull: true
   }
 
 }, {
   sequelize,
-  modelName: 'User',        // antes: Usuario
+  modelName: 'User',        //  Usuario
 });
 
 export default User;

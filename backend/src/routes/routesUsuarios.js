@@ -1,15 +1,15 @@
 import express from "express";
-import User from "../models/usuariosModel.js"; // usuariosModel.js
+import User from "../models/usuariosModel.js"; // Modelo de usuario
 const router = express.Router();
 import bcrypt from "bcrypt";
 
 
-// GET all users
+
 // Vista de usuarios
 router.get("/usuarios", async (req, res) => {
   try {
     const usuarios = await User.findAll(); // Obtener todos los usuarios
-    res.render("usuarios", { usuarios }); // Renderizar vista
+    res.render("usuarios", { usuariosEncontrados: usuarios }); // Renderizar vista
   } catch (error) {
     console.error("Error al obtener usuarios:", error);
     res.status(500).send("Error en el servidor");
@@ -19,7 +19,7 @@ router.get("/usuarios", async (req, res) => {
 // POST Crear nuevo usuario
 router.post("/usuarios", async (req, res) => {
   try {
-    await User.sync(); // opcional si la tabla ya existe
+    await User.sync(); 
 
     const { id_document, first_name, last_name, email, password, role } = req.body;
 
@@ -47,7 +47,7 @@ router.post("/usuarios", async (req, res) => {
       role
     });
 
-    // ✅ Registro exitoso → redirige al inicio
+    // Registro exitoso  redirige al inicio
     return res.send(`
       <script>
         alert("Usuario registrado con éxito");
@@ -66,26 +66,5 @@ router.post("/usuarios", async (req, res) => {
   }
 });
 
-
-// PUT update user (ejemplo de estructura)
-// router.put('/users/:id_card', async (req, res) => {
-//   try {
-//     const { first_name, last_name, email, password, role } = req.body;
-
-//     const updated = await User.update(
-//       { first_name, last_name, email, password, role },
-//       { where: { id_card: req.params.id_card } }
-//     );
-
-//     if (updated[0] === 0) {
-//       return res.status(404).send("User not found");
-//     }
-
-//     res.status(200).send("User updated successfully");
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Error updating user");
-//   }
-// });
 
 export default router;

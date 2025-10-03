@@ -5,7 +5,7 @@ import { Op } from "sequelize";
 
 const router = express.Router();
 
-// ✅ Vista de requerimientos
+//  Vista de requerimientos
 router.get("/requerimientos", async (req, res) => {
   try {
     const requerimientos = await Requirement.findAll();
@@ -16,7 +16,7 @@ router.get("/requerimientos", async (req, res) => {
   }
 });
 
-// ✅ Crear requerimiento
+//  Crear requerimiento
 router.post("/requerimientos", async (req, res) => {
   try {
     const {
@@ -47,7 +47,7 @@ router.post("/requerimientos", async (req, res) => {
       body: createRequirement,
     });
   } catch (error) {
-    console.error("❌ Error creando requerimiento:", error);
+    console.error(" Error creando requerimiento:", error);
     res.status(500).json({
       ok: false,
       status: 500,
@@ -57,7 +57,7 @@ router.post("/requerimientos", async (req, res) => {
   }
 });
 
-// ✅ Tablero T1
+//  Tablero T1
 router.get("/tableroT1", async (req, res) => {
   try {
     const reqs = await Requirement.findAll({ where: { typology: "T1" } });
@@ -89,12 +89,12 @@ router.get("/tableroT1", async (req, res) => {
       layout: false,
     });
   } catch (error) {
-    console.error("❌ Error cargando tablero T1:", error);
+    console.error(" Error cargando tablero T1:", error);
     res.status(500).send("Error cargando tablero T1");
   }
 });
 
-// ✅ Tablero T2
+//  Tablero T2
 router.get("/tableroT2", async (req, res) => {
   try {
     const reqs = await Requirement.findAll({ where: { typology: "T2" } });
@@ -126,12 +126,12 @@ router.get("/tableroT2", async (req, res) => {
       layout: false,
     });
   } catch (error) {
-    console.error("❌ Error cargando tablero T2:", error);
+    console.error(" Error cargando tablero T2:", error);
     res.status(500).send("Error cargando tablero T2");
   }
 });
 
-// ✅ Actualizar responsable de un requerimiento
+//  Actualizar responsable de un requerimiento
 router.put("/requerimientos/:id/responsable", async (req, res) => {
   try {
     const { id } = req.params;
@@ -150,14 +150,14 @@ router.put("/requerimientos/:id/responsable", async (req, res) => {
 
     res.json({ ok: true, message: "Responsable actualizado correctamente" });
   } catch (error) {
-    console.error("❌ Error actualizando responsable:", error);
+    console.error(" Error actualizando responsable:", error);
     res
       .status(500)
       .json({ ok: false, message: "Error en el servidor" });
   }
 });
 
-// ✅ Actualizar requerimiento (estado o responsable)
+//  Actualizar requerimiento (estado o responsable)
 router.patch("/requerimientos/:id/update", async (req, res) => {
   try {
     const { id } = req.params;
@@ -193,14 +193,14 @@ router.patch("/requerimientos/:id/update", async (req, res) => {
       requerimiento,
     });
   } catch (error) {
-    console.error("❌ Error actualizando requerimiento:", error);
+    console.error(" Error actualizando requerimiento:", error);
     res
       .status(500)
       .json({ ok: false, message: "Error actualizando requerimiento" });
   }
 });
 
-// ✅ Buscar requerimientos (para autocompletado en nav)
+//  Buscar requerimientos (para autocompletado en nav)
 router.get("/buscar", async (req, res) => {
   try {
     const { q } = req.query;
@@ -219,14 +219,14 @@ router.get("/buscar", async (req, res) => {
 
     res.json(requerimientos);
   } catch (error) {
-    console.error("❌ Error en búsqueda:", error);
+    console.error(" Error en búsqueda:", error);
     res
       .status(500)
       .json({ ok: false, message: "Error en la búsqueda" });
   }
 });
 
-// ✅ Obtener detalle de un requerimiento en JSON (para modal)
+//  Obtener detalle de un requerimiento en JSON (para modal)
 router.get("/api/requerimientos/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -240,7 +240,7 @@ router.get("/api/requerimientos/:id", async (req, res) => {
 
     res.json(reqItem);
   } catch (error) {
-    console.error("❌ Error fetching requerimiento:", error);
+    console.error(" Error fetching requerimiento:", error);
     res
       .status(500)
       .json({ ok: false, message: "Error en el servidor" });

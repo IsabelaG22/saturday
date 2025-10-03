@@ -1,8 +1,4 @@
-// public/js/funcionalidadesTableros.js
-
-/* =====================================================
-   Funciones principales: actualizar y mover filas
-   ===================================================== */
+/*Funciones principales: actualizar y mover filas*/
 async function actualizarCampo(id, campo, valor, fila) {
   try {
     const cuerpo = { [campo]: valor };
@@ -34,8 +30,7 @@ function moverFila(fila, nuevoEstado) {
     fila.classList.add("fade-out");
     setTimeout(() => {
       if (nuevoEstado === "compromiso") cuerpoCompromiso.appendChild(fila);
-      if (nuevoEstado === "implementacion")
-        cuerpoImplementacion.appendChild(fila);
+      if (nuevoEstado === "implementacion") cuerpoImplementacion.appendChild(fila);
       if (nuevoEstado === "qa/revision") cuerpoQA.appendChild(fila);
 
       fila.classList.remove("fade-out");
@@ -81,19 +76,17 @@ function inicializarSelects() {
    ===================================================== */
 function cerrarTodosLosMenus() {
   try {
-    document
-      .querySelectorAll(".estado-menu, .responsable-menu")
-      .forEach((m) => {
-        m.style.display = "none";
-        if (m._abierto) {
-          m._abierto = false;
-          if (m._recolocar) {
-            window.removeEventListener("scroll", m._recolocar);
-            window.removeEventListener("resize", m._recolocar);
-            m._recolocar = null;
-          }
+    document.querySelectorAll(".estado-menu, .responsable-menu").forEach((m) => {
+      m.style.display = "none";
+      if (m._abierto) {
+        m._abierto = false;
+        if (m._recolocar) {
+          window.removeEventListener("scroll", m._recolocar);
+          window.removeEventListener("resize", m._recolocar);
+          m._recolocar = null;
         }
-      });
+      }
+    });
   } catch (err) {
     console.error("Error en cerrarTodosLosMenus:", err);
   }
@@ -231,33 +224,20 @@ function inicializarResponsables() {
         const avatarOpcion = opcion.querySelector(".responsable-avatar");
         const iniciales = avatarOpcion
           ? avatarOpcion.textContent.trim()
-          : valor
-              .split(" ")
-              .map((n) => n[0])
-              .join("")
-              .toUpperCase();
+          : valor.split(" ").map((n) => n[0]).join("").toUpperCase();
 
-        const clasesAvatar = avatarOpcion
-          ? Array.from(avatarOpcion.classList)
-          : [];
-        const claseColor =
-          clasesAvatar.find((c) => c.startsWith("avatar-color-")) || "";
+        const clasesAvatar = avatarOpcion ? Array.from(avatarOpcion.classList) : [];
+        const claseColor = clasesAvatar.find((c) => c.startsWith("avatar-color-")) || "";
 
         const avatarDestino = drop.querySelector(".responsable-avatar");
         if (avatarDestino) {
           avatarDestino.textContent = iniciales;
-          avatarDestino.className =
-            "responsable-avatar" + (claseColor ? " " + claseColor : "");
+          avatarDestino.className = "responsable-avatar" + (claseColor ? " " + claseColor : "");
           avatarDestino.classList.remove("empty");
         }
 
         alternarMenu(menu);
-        actualizarCampo(
-          drop.dataset.id,
-          "responsible",
-          valor,
-          drop.closest("tr")
-        );
+        actualizarCampo(drop.dataset.id, "responsible", valor, drop.closest("tr"));
       });
     });
   } catch (err) {
@@ -277,11 +257,9 @@ function inicializarTableros() {
     // cerrar menús si se hace clic fuera
     document.addEventListener("click", (e) => {
       const dentroEstado =
-        !!e.target.closest(".estado-dropdown") ||
-        !!e.target.closest(".estado-menu");
+        !!e.target.closest(".estado-dropdown") || !!e.target.closest(".estado-menu");
       const dentroResp =
-        !!e.target.closest(".responsable-dropdown") ||
-        !!e.target.closest(".responsable-menu");
+        !!e.target.closest(".responsable-dropdown") || !!e.target.closest(".responsable-menu");
       if (!dentroEstado && !dentroResp) cerrarTodosLosMenus();
     });
   } catch (err) {
@@ -290,68 +268,58 @@ function inicializarTableros() {
 }
 
 /* =====================================================
+   Barra global sincronizada
+   ===================================================== */
+function inicializarBarraGlobal() {
+  try {
+    const globalScroll = document.querySelector(".global-scroll");
+    const scrollbar = document.querySelector(".scrollbar-global");
+    const inner = scrollbar && scrollbar.querySelector(".scrollbar-inner");
+    if (!globalScroll || !scrollbar || !inner) return;
+
+    function updateInnerWidth() {
+      inner.style.width = globalScroll.scrollWidth + "px";
+    }
+    updateInnerWidth();
+    window.addEventListener("resize", updateInnerWidth);
+
+    // sincronización bidireccional
+    let syncing = false;
+    scrollbar.addEventListener(
+      "scroll",
+      () => {
+        if (syncing) return;
+        syncing = true;
+        globalScroll.scrollLeft = scrollbar.scrollLeft;
+        syncing = false;
+      },
+      { passive: true }
+    );
+
+    globalScroll.addEventListener(
+      "scroll",
+      () => {
+        if (syncing) return;
+        syncing = true;
+        scrollbar.scrollLeft = globalScroll.scrollLeft;
+        syncing = false;
+      },
+      { passive: true }
+    );
+
+    const mo = new MutationObserver(() =>
+      requestAnimationFrame(updateInnerWidth)
+    );
+    mo.observe(globalScroll, { childList: true, subtree: true, attributes: true });
+  } catch (err) {
+    console.error("Error en inicializarBarraGlobal:", err);
+  }
+}
+
+/* =====================================================
    Lanzar inicialización
    ===================================================== */
-document.addEventListener("DOMContentLoaded", inicializarTableros);
-
-// Tooltip JS original tuyo sin cambios
-document.addEventListener("DOMContentLoaded", function () {
-  const tooltip = document.createElement("div");
-  tooltip.className = "tooltip-float";
-  document.body.appendChild(tooltip);
-  let activeTd = null;
-
-  document.addEventListener("mouseover", (e) => {
-    const td = e.target.closest(".td-limitado");
-    if (!td) return;
-    activeTd = td;
-    let text = td.dataset.full || td.textContent || "";
-    try {
-      text = decodeURIComponent(text);
-    } catch (err) {}
-    tooltip.textContent = text;
-    tooltip.classList.add("show");
-    tooltip.style.pointerEvents = "none";
-    positionTooltipForTd(td);
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (!activeTd) return;
-    positionTooltipForTd(activeTd);
-  });
-
-  document.addEventListener("mouseout", (e) => {
-    const related = e.relatedTarget;
-    if (!activeTd) return;
-    if (!related || !related.closest || !related.closest(".td-limitado")) {
-      tooltip.classList.remove("show");
-      tooltip.style.display = "none";
-      activeTd = null;
-    }
-  });
-
-  function positionTooltipForTd(td) {
-    const rect = td.getBoundingClientRect();
-    tooltip.style.left = "0px";
-    tooltip.style.top = "0px";
-    tooltip.style.display = "block";
-    const tipRect = tooltip.getBoundingClientRect();
-    const margin = 8;
-    let left = rect.left + (rect.width - tipRect.width) / 2;
-    if (left < margin) left = margin;
-    if (left + tipRect.width > window.innerWidth - margin) {
-      left = window.innerWidth - margin - tipRect.width;
-    }
-    let top = rect.bottom + 8;
-    if (top + tipRect.height > window.innerHeight - margin) {
-      top = rect.top - tipRect.height - 8;
-      tooltip.classList.add("arrow-bottom");
-      tooltip.classList.remove("arrow-top");
-    } else {
-      tooltip.classList.add("arrow-top");
-      tooltip.classList.remove("arrow-bottom");
-    }
-    tooltip.style.left = `${Math.round(left)}px`;
-    tooltip.style.top = `${Math.round(top)}px`;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  inicializarTableros();
+  inicializarBarraGlobal();
 });

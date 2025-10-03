@@ -26,7 +26,6 @@ function inicializarModalRegistro() {
       }
     });
 
-    console.log("Modal de registro inicializado correctamente");
   } catch (error) {
     console.error("Error al inicializar el modal de registro:", error.message);
   }
